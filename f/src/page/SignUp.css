@@ -1,0 +1,22 @@
+.sh{
+    text-align: left;
+}
+body{
+    text-align: left;
+}
+
+input[type="email"], input[type="password"], input[type="text"]{
+    font-family: 'Montserrat';
+    height: 25px;
+    border: 2px solid #628E90;
+    width: 457px;
+    height: 28px;
+    border-radius: 50px;
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    padding: 10px;
+    padding-left: 15px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
