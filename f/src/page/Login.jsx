@@ -20,11 +20,11 @@ function Login({ setUserLoggedIn }) {
             <h1>GooseBook</h1>
             <img src="../asset/NongGoose.png" alt="Nong Goose" />
             <form onSubmit={handleLogin}>
-                <div className='input-container'>
+                <div className='input-container1'>
                     <label htmlFor="email">Email:</label><br />
                     <input type="email" id="email" placeholder='Email' pattern='^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$' value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
-                <div className='input-container'>
+                <div className='input-container2'>
                     <label className='pass' htmlFor="password">Password:</label><br />
                     <input type="password" id="password" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} />
                 </div>
