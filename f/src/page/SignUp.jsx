@@ -2,7 +2,7 @@ import './SignUp.css';
 import { useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link, useNavigate } from "react-router-dom";
-import Login from './Login';
+
 function Signup({ setUserSignup }) {
     const [name, setName] = useState('')
     const [surname, setSurname] = useState('');
@@ -11,41 +11,10 @@ function Signup({ setUserSignup }) {
     const [confirmedPass, setConfirmedPass] = useState('');
     const navigate = useNavigate();
 
-    // const handleSignup = (event) => {
-    //     // if(password === confirmedPass | password != null){
-    //     //     event.preventDefault();
-    //     //     setUserSignup(true);
-    //     //     navigate("/Home");
-    //     // }
-    //     // else{
-    //     //     alert('The password and confirmed password aren\'t the same');
-    //     // }
-    //     event.preventDefault();
-    //         if (!name) {
-    //             alert('Please enter your name.');
-    //         } else if (password !== confirmedPass) {
-    //             alert('The password and confirmed password aren\'t the same');
-    //         } else {
-    //             setUserSignup(true);
-    //             navigate("/Home");
-    //         }
-    // }
     const handleSignup = (e) => {
         e.preventDefault();
-        if (!name) {
-          alert('Please enter your name.');
-          return;
-        }
-        if (!surname) {
-          alert('Please enter your surname.');
-          return;
-        }
-        if (!email) {
-          alert('Please enter your email.');
-          return;
-        }
-        if (!password) {
-          alert('Please enter your password.');
+        if (!!name || !!surname || !!email || !!password || !!confirmedPass) {
+          alert('Please provide all required information.');
           return;
         }
         if (password !== confirmedPass) {
@@ -55,14 +24,11 @@ function Signup({ setUserSignup }) {
         setUserSignup(true);
         navigate("/Home");
       }
-      
-    
-
     return (
         <div>
             <h1 className='sh'>GooseBook</h1>
             <img src='../asset/lib1.png' className='li1' alt='library1' />
-            <form onSubmit={handleSignup} className='signup'>
+            <form onSubmit={handleSignup} className='signup' noValidate>
                 <div className='info'>
                     <label className="nameS" htmlFor="name">Name:</label><br />
                     <input type="text" placeholder='Name' value={name} onChange={(e) => setName(e.target.value)} required/>

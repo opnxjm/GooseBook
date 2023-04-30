@@ -13,7 +13,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login setUserLoggedIn={setUserLoggedIn} />} />
-          <Route path='/Signup' element={<Signup />} />
+          <Route path='/Signup' element={<Signup setUserSignup={setUserSignup}/>} />
           <Route path="/Home" element={<Home userLoggedIn={userLoggedIn} userSignup={userSignup} />} />
         </Routes>
       </BrowserRouter>
