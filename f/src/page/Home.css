@@ -4,4 +4,40 @@ body{
     text-align: center;
     color: #628E90;
 }
-
+.profile1 {
+    object-fit: cover;
+    width: 230px;
+    height: 230px;
+    float: left;
+    margin-left: 8%;
+    margin-top: 3%;
+    display: inline-flex;
+  }
+  .hi{
+    font-family: 'Montserrat';
+    color: #628E90;
+    font-weight: 1000;
+    font-size: 30px;
+    margin-top: 5%;
+    margin-left: 28%;
+  }
+.look{
+    font-family: 'Montserrat';
+    color: #628E90;
+    font-weight: 1000;
+    font-size: 20px;
+    margin-left: 28%;
+}
+.search{
+    margin-left: 28%;
+    /* display: inline; */
+    color: #606161;
+    font-family: 'Montserrat';
+    font-size: 18px;
+    padding: 0.5%;
+    background-color: white;
+    border: solid #628E90;
+    width: 30%;
+    height: 45px;
+    border-radius: 50px;
+}

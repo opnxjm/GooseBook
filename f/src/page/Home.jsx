@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
@@ -8,7 +7,10 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
+import SearchIcon from '@mui/icons-material/Search';
+import React, { useState } from 'react';
 import './Home.css';
+import { useNavigate } from 'react-router-dom';
 
 
 const theme = createTheme({
@@ -29,7 +31,10 @@ const theme = createTheme({
 });
 
 function Home() {
-    
+    const navigate = useNavigate();
+    const handleOpenProfile = (e) => {
+        navigate("/Profile");
+    }
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -40,6 +45,7 @@ function Home() {
                             GooseBook
                         </Typography>
                         <IconButton
+                            title='Open setting'
                             size="large"
                             edge="end"
                             aria-label="setting"
@@ -47,13 +53,22 @@ function Home() {
                         >
                             <SettingsIcon sx={{ fontSize: 30, marginLeft: 'auto', flexGrow: 0, color: '#FFF6E8' }} />
                         </IconButton>
-                        {/* <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                        <Tooltip title="Open profile">
+                            <IconButton onClick={handleOpenProfile} sx={{ p: 0}}>
+                                <Avatar alt="Profile1" src="../asset/profile.JPG" sx={{ml: '79%'}} />
                             </IconButton>
-                        </Tooltip> */}
+                        </Tooltip>
                     </Toolbar>
                 </AppBar>
+                <img className='profile1' alt="Profile1" src="../asset/profile.JPG" />
+                <h1 className='hi'>Hi, Welcome</h1>
+                <p className='look'>Looking for something?</p>
+                <p className='search'><SearchIcon sx={{ mr: 1, fontSize:17}}/>Search something</p>
+                {/* <input 
+                    className='search' 
+                    type="text" placeholder={<><SearchIcon sx={{ mr: 1 }} /> Search something</>} 
+                    style={{height: '45px'}}></input> */}
+                
             </div>
         </ThemeProvider>
     );

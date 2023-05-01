@@ -1,4 +1,9 @@
 .sh{
+    font-family: 'Rammetto One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 50px;
+    color: #3C2317;
     text-align: left;
     margin: 0;
     display: inline-block;

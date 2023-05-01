@@ -17,7 +17,7 @@ function Login({ setUserLoggedIn }) {
 
     return (
         <div>
-            <h1>GooseBook</h1>
+            <h1 className='logo_login'>GooseBook</h1>
             <img src="../asset/NongGoose.png" alt="Nong Goose" />
             <form onSubmit={handleLogin}>
                 <div className='input-container1'>
