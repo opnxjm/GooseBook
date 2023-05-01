@@ -1,5 +1,7 @@
 .sh{
     text-align: left;
+    margin: 0;
+    display: inline-block;
     margin-top:2%;
     margin-left: 2%;
     margin-bottom: 2%;
@@ -51,4 +53,10 @@ input[type="email"], input[type="password"], input[type="text"]{
     margin-left: 2%;
     display: flex;
     text-decoration: none;
+}
+.su{
+    display: inline-flex;
+    font-weight: bold;
+    margin-left: 21%;
+    font-size: 25px;
 }

@@ -1,6 +1,7 @@
 import Login from './page/Login';
 import Home from './page/Home';
-import Signup from './page/SignUp';
+import Signup from './page/SignUp'
+import Profile from './page/Profile'
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
 import React from 'react';
 import { useState } from 'react';
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" element={<Login setUserLoggedIn={setUserLoggedIn} />} />
           <Route path='/Signup' element={<Signup setUserSignup={setUserSignup}/>} />
           <Route path="/Home" element={<Home userLoggedIn={userLoggedIn} userSignup={userSignup} />} />
+          <Route path='/Profile' element={ <Profile userLoggedIn={userLoggedIn}/>} />
         </Routes>
       </BrowserRouter>
     </div>

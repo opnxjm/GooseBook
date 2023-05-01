@@ -46,7 +46,7 @@ function Login({ setUserLoggedIn }) {
                     filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
                 }}>
                     Login</button>
-                <p className='or'>OR</p>
+                <p className='or' style={{fontWeight:'bold', fontSize:'20px'}}>OR</p>
                 <Link to="/signup" style={{ textDecoration: 'none' }}>
                     <button className='Signup-button' type="submit" style={{
                         backgroundColor: 'white',

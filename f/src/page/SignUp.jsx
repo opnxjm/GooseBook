@@ -12,7 +12,7 @@ function Signup({ setUserSignup }) {
     const navigate = useNavigate();
 
     const handleSignup = (e) => {
-        e.preventDefault();
+        // e.preventDefault();
         if (!!name || !!surname || !!email || !!password || !!confirmedPass) {
           alert('Please provide all required information.');
           return;
@@ -26,7 +26,8 @@ function Signup({ setUserSignup }) {
       }
     return (
         <div>
-            <h1 className='sh'>GooseBook</h1>
+            <h1 className='sh' style={{display: 'inline-block', marginBlockStart:'0', marginTop:'2%'}}>GooseBook</h1>
+            <p className='su'>Sign-up</p>
             <img src='../asset/lib1.png' className='li1' alt='library1' />
             <form onSubmit={handleSignup} className='signup' noValidate>
                 <div className='info'>
