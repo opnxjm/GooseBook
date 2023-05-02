@@ -11,6 +11,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import React, { useState } from 'react';
 import './Home.css';
 import { useNavigate } from 'react-router-dom';
+import { Box } from '@mui/material';
 
 
 const theme = createTheme({
@@ -54,8 +55,8 @@ function Home() {
                             <SettingsIcon sx={{ fontSize: 30, marginLeft: 'auto', flexGrow: 0, color: '#FFF6E8' }} />
                         </IconButton>
                         <Tooltip title="Open profile">
-                            <IconButton onClick={handleOpenProfile} sx={{ p: 0}}>
-                                <Avatar alt="Profile1" src="../asset/profile.JPG" sx={{ml: '79%'}} />
+                            <IconButton onClick={handleOpenProfile} sx={{ p: 0 }}>
+                                <Avatar alt="Profile1" src="../asset/profile.JPG" sx={{ ml: '79%' }} />
                             </IconButton>
                         </Tooltip>
                     </Toolbar>
@@ -63,12 +64,14 @@ function Home() {
                 <img className='profile1' alt="Profile1" src="../asset/profile.JPG" />
                 <h1 className='hi'>Hi, Welcome</h1>
                 <p className='look'>Looking for something?</p>
-                <p className='search'><SearchIcon sx={{ mr: 1, fontSize:17}}/>Search something</p>
+                <p className='search'><SearchIcon sx={{ mr: 1, fontSize: 17 }} />Search something</p>
                 {/* <input 
                     className='search' 
                     type="text" placeholder={<><SearchIcon sx={{ mr: 1 }} /> Search something</>} 
                     style={{height: '45px'}}></input> */}
-                
+                <Box sx={{backgroundColor: 'white', marginTop:'4%'}}>
+                    <Typography variant="h5" sx={{fontFamily: 'Montserrat', marginLeft:'2%', color:'#3C2317'}}>Recommended book</Typography>
+                </Box>
             </div>
         </ThemeProvider>
     );

@@ -2,6 +2,8 @@ import './SignUp.css';
 import { useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link, useNavigate } from "react-router-dom";
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
 
 function Signup({ setUserSignup }) {
     const [name, setName] = useState('')
@@ -10,29 +12,44 @@ function Signup({ setUserSignup }) {
     const [password, setPassword] = useState('');
     const [confirmedPass, setConfirmedPass] = useState('');
     const navigate = useNavigate();
+    const theme = useTheme();
+    const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
+    const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
+    // const matches = useMediaQuery(theme.breakpoints.up('sm'));
 
     const handleSignup = (e) => {
-        // e.preventDefault();
-        if (!!name || !!surname || !!email || !!password || !!confirmedPass) {
-          alert('Please provide all required information.');
-          return;
+        e.preventDefault()
+        if(password === confirmedPass &&name !='' && surname != '' && email != ''){
+            setUserSignup(true);
+            navigate("/Home");
         }
-        if (password !== confirmedPass) {
-          alert('The password and confirmed password aren\'t the same');
-          return;
+        else if(password !== confirmedPass){
+            alert('The password and confirmed password aren\'t the same');
         }
-        setUserSignup(true);
-        navigate("/Home");
+        else{
+            alert('Please provide all required information.');
+        }
+        // if (!!name || !!surname || !!email || !!password || !!confirmedPass) {
+        //   alert('Please provide all required information.');
+        // //   return;
+        // }
+        // if (password !== confirmedPass) {
+        //   alert('The password and confirmed password aren\'t the same');
+        // //   return;
+        // }
+        
+       
       }
     return (
-        <div>
+        <div className='signup-container'>
             <h1 className='sh' style={{display: 'inline-block', marginBlockStart:'0', marginTop:'2%'}}>GooseBook</h1>
-            <p className='su'>Sign-up</p>
-            <img src='../asset/lib1.png' className='li1' alt='library1' />
-            <form onSubmit={handleSignup} className='signup' noValidate>
+            {/* <p className='su'  style={{display: {xs:'none', md:'none'}}}>Sign-up</p> */}
+            {!matchesXS && <p className='su'  style={{display: matchesMD ? 'none' : 'inline-block'}}>Sign-up</p>}
+            {!matchesMD && <img src='../asset/lib1.png' className='li1' alt='library1' style={{display: matchesXS ? 'none' : 'block'}} />}
+            <form onSubmit={handleSignup} className='signup'>
                 <div className='info'>
-                    <label className="nameS" htmlFor="name">Name:</label><br />
-                    <input type="text" placeholder='Name' value={name} onChange={(e) => setName(e.target.value)} required/>
+                    <label className="nameS" hemlFor="name">Name:</label><br />
+                    <input type="text" required placeholder='Name' value={name} onChange={(e) => setName(e.target.value)} />
                 </div>
                 <div className='info'>
                     <label className="nameS" htmlFor="surname">Surname:</label><br />
@@ -57,11 +74,7 @@ function Signup({ setUserSignup }) {
                     }}>
                         <ArrowBackIcon fontSize='large' />
                     </Link>
-                    <Link to='/Home' style={{
-                        textDecoration: 'none',
-                        marginLeft: '40%'
-                    }}>
-                        <button type="submit" style={{
+                        <input type="submit" style={{
                             backgroundColor: '#628E90',
                             borderRadius: '50px',
                             height: '52px',
@@ -77,8 +90,7 @@ function Signup({ setUserSignup }) {
                             margin: 'auto',
                             // marginTop: '3%',
                             filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
-                        }}>Sign up</button>
-                    </Link>
+                        }}  value= "Sign up"/>
                 </div>
             </form>
         </div>

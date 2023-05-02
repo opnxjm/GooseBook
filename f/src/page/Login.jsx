@@ -16,12 +16,12 @@ function Login({ setUserLoggedIn }) {
     }
 
     return (
-        <div>
+        <div className='login'>
             <h1 className='logo_login'>GooseBook</h1>
             <img src="../asset/NongGoose.png" alt="Nong Goose" />
             <form onSubmit={handleLogin}>
                 <div className='input-container1'>
-                    <label htmlFor="email">Email:</label><br />
+                    <label className='email-login' htmlFor="email" style={{marginLeft:{xs:'5%', md:'10%', ld:'15%'}}}>Email:</label><br />
                     <input type="email" id="email" placeholder='Email' pattern='^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$' value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
                 <div className='input-container2'>
@@ -42,7 +42,7 @@ function Login({ setUserLoggedIn }) {
                     alignItems: 'center',
                     justifyContent: 'center',
                     margin: 'auto',
-                    marginTop: '30px',
+                    marginTop: '3%',
                     filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
                 }}>
                     Login</button>
