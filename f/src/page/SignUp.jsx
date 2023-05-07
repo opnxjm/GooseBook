@@ -4,6 +4,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link, useNavigate } from "react-router-dom";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import Axios from "axios";
 
 function Signup({ setUserSignup }) {
     const [name, setName] = useState('')
@@ -16,10 +17,29 @@ function Signup({ setUserSignup }) {
     const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
     const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
     // const matches = useMediaQuery(theme.breakpoints.up('sm'));
-
+    const [userList, setUserList] = useState([]);
+    const addUser = () => {
+        Axios.post("http://localhost:3008/create", {
+            name: name,
+            surname: surname,
+            email: email,
+            pass: password,
+        }).then(() => {
+          setUserList([
+            ...userList,
+            {
+                name: name,
+                surname: surname,
+                email: email,
+                pass: password,
+            },
+          ]);
+        });
+      };
     const handleSignup = (e) => {
         e.preventDefault()
         if(password === confirmedPass &&name !='' && surname != '' && email != ''){
+            addUser();
             setUserSignup(true);
             navigate("/Home");
         }

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import './Login.css';
+import { useHistory } from 'react-router-dom';
+
 function Login({ setUserLoggedIn }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -15,10 +17,11 @@ function Login({ setUserLoggedIn }) {
         }
     }
 
+
     return (
         <div className='login'>
             <h1 className='logo_login'>GooseBook</h1>
-            <img src="../asset/NongGoose.png" alt="Nong Goose" />
+            <img src="../asset/NongGoose.png" alt="Nong Goose" className='NongGoose' />
             <form onSubmit={handleLogin}>
                 <div className='input-container1'>
                     <label className='email-login' htmlFor="email" style={{marginLeft:{xs:'5%', md:'10%', ld:'15%'}}}>Email:</label><br />
