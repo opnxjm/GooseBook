@@ -9,6 +9,9 @@ import './App.css';
 import ProfileRead from './page/ProfileRead';
 import ProfileWant from './page/ProfileWant';
 import Search from './page/Search';
+import NotFound from './page/NotFound';
+import AddClub from './page/AddClub';
+import BookOverview from './page/BookOverview';
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [userSignup, setUserSignup] = useState(false);
@@ -23,6 +26,9 @@ function App() {
           <Route path='/ProfileRead' element={ <ProfileRead userLoggedIn={userLoggedIn}/>} />
           <Route path='/ProfileWant' element={ <ProfileWant userLoggedIn={userLoggedIn}/>} />
           <Route path='/Search' element={ <Search userLoggedIn={userLoggedIn}/>} />
+          <Route path='/NotFound' element={ <NotFound userLoggedIn={userLoggedIn}/>} />
+          <Route path='/AddClub' element={ <AddClub userLoggedIn={userLoggedIn}/>} />
+          <Route path='/BookOverview' element={ <BookOverview userLoggedIn={userLoggedIn}/>} />
         </Routes>
       </BrowserRouter>
     </div>

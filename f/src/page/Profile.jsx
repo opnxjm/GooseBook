@@ -111,7 +111,12 @@ function Profile({ email }) {
                 </Link>
             </Box>
             <br /> <br /> <br />
-            <BottomNav />
+            <Box sx={{
+                    left: 0,
+                    bottom: 0,
+                    width: '100%'}}>
+            <BottomNav/>
+            </Box>
         </Box>
     );
 }

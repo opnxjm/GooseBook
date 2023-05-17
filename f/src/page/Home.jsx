@@ -2,6 +2,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
 import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from '@mui/icons-material/Add';
 import React, { useState } from 'react';
 import './Home.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -41,11 +42,11 @@ function Home() {
             <img className='profile1' alt="Profile1" src="../asset/profile.JPG" style={{ borderRadius: '360px' }} />
             <h1 className='hi'>Hi, Welcome</h1>
             <p className='look'>Looking for something?</p>
-            <Link to ="/Search" style={{textDecoration:'none'}}>
-            <p className='search'><SearchIcon sx={{ mr: 1, fontSize: 17 }} />Search something</p>
+            <Link to="/Search" style={{ textDecoration: 'none' }}>
+                <p className='search'><SearchIcon sx={{ mr: 1, fontSize: 17 }} />Search something</p>
             </Link>
             <Box sx={{ backgroundColor: 'white', marginTop: '4%' }}>
-                <Typography variant="h5" sx={{ fontFamily: 'Montserrat', marginLeft: '2%', color: '#3C2317', fontWeight:'bold' }}>
+                <Typography variant="h5" sx={{ fontFamily: 'Montserrat', marginLeft: '2%', color: '#3C2317', fontWeight: 'bold' }}>
                     Recommended book
                 </Typography>
                 <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: '1%' }}>
@@ -114,7 +115,7 @@ function Home() {
                             image="../asset/emo.jpeg"
                         />
                         <CardContent>
-                            <Typography gutterBottom variant="h7" sx={{ fontFamily: 'Montserrat', color: '#3C2317', textAlign: 'center',marginTop: '6px' }} component="div">
+                            <Typography gutterBottom variant="h7" sx={{ fontFamily: 'Montserrat', color: '#3C2317', textAlign: 'center', marginTop: '6px' }} component="div">
                                 Emotional first aid
                             </Typography>
                         </CardContent>
@@ -136,8 +137,8 @@ function Home() {
                 </Box>
             </Box>
             <br />
-            <Box sx={{ backgroundColor: 'white', marginTop: '1%', marginBottom:'2%' }}>
-                <Typography variant="h5" sx={{ fontFamily: 'Montserrat', marginLeft: '2%', color: '#3C2317', fontWeight:'bold' }}>
+            <Box sx={{ backgroundColor: 'white', marginTop: '1%', marginBottom: '2%' }}>
+                <Typography variant="h5" sx={{ fontFamily: 'Montserrat', marginLeft: '2%', color: '#3C2317', fontWeight: 'bold' }}>
                     Club
                 </Typography>
                 <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: '1%' }}>
@@ -211,19 +212,25 @@ function Home() {
                             </Typography>
                         </CardContent>
                     </Card>
-                    <Card sx={{ height: 'auto', width: '15%', marginLeft: '20px', marginBottom: '20px', backgroundColor: '#B4CDE6', marginRight: '20px' }}>
-                        <CardMedia
+
+                    <Card sx={{ height: 'auto', width: '15%', marginLeft: '20px', marginBottom: '20px', backgroundColor: 'white', marginRight: '20px', border: 'dashed 3px #B4CDE6' }}>
+                        <Link to='/AddClub' style={{ textDecoration: 'none' }}>
+                            {/* <CardMedia
                             component="img"
                             alt="self"
                             sx={{ display: 'flex', justifyContent: 'center', marginLeft: '25%', marginTop: '10px' }}
                             style={{ width: '50%', height: 'auto' }}
                             image="../asset/self.jpeg"
-                        />
-                        <CardContent>
-                            <Typography gutterBottom variant="h7" sx={{ fontFamily: 'Montserrat', color: '#3C2317', textAlign: 'center' }} component="div">
-                                Self Love Poetry
-                            </Typography>
-                        </CardContent>
+                        /> */}
+                            <CardContent sx={{ alignContent: 'center' }} >
+                                <Box sx={{ display: 'flex', justifyContent: 'center', alignContent: 'center', marginTop: '45%' }}>
+                                    <AddIcon fontSize='large' sx={{ color: '#B4CDE6' }} />
+                                </Box>
+                                <Typography gutterBottom variant="h6" sx={{ fontFamily: 'Montserrat', color: '#B4CDE6', textAlign: 'center', fontWeight: 'bold' }} component="div">
+                                    Add
+                                </Typography>
+                            </CardContent>
+                        </Link>
                     </Card>
                 </Box>
             </Box>

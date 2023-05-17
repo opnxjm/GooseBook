@@ -2,20 +2,47 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import './Login.css';
 import { useHistory } from 'react-router-dom';
+import { Axios } from 'axios';
 
 function Login({ setUserLoggedIn }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-    const handleLogin = (event) => {
-        event.preventDefault();
-        if (email === "iamthawanrat.tn@gmail.com" && password === "wanttosleep") {
+
+    const searchUser = () => {
+        Axios.get("http://localhost:3008/login", {
+            email: email,
+            password: password
+        }).then(() => {
             setUserLoggedIn(true);
-            navigate("/Home");
-        } else {
-            alert("Invalid email or password");
+            //navigate('/Home');
+        });
+    };
+
+    const handleLogin = async (event) => {
+        if(searchUser){
+            setUserLoggedIn(true);
+            navigate('/Home');
         }
-    }
+        event.preventDefault();
+        
+        try {
+            const response = await Axios.get("http://localhost:3008/login");
+            const userData = response.data;
+
+            const user = userData.find((user) => user.email === email && user.password === password);
+
+            if (user) {
+                setUserLoggedIn(true);
+                navigate('/Home');
+            } else {
+                alert("Invalid email or password");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
 
 
     return (

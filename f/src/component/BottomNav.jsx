@@ -13,6 +13,10 @@ export default function BottomNav() {
         setValue(newValue);
     };
     return (
+        <Box sx={{
+            left: 0,
+            bottom: 0,
+            width: '100%'}}>
         <BottomNavigation
             sx={{
                 width: "100%",
@@ -44,8 +48,8 @@ export default function BottomNav() {
                 icon={<TwitterIcon fontSize="large" style={{color:'#B4CDE6', marginInlineStart:'10px'}}/>}
                 
             /> */}
-            <Box sx={{display:'flex', flexDirection:'row', marginTop:'3%', marginLeft:'10%'}}>
-            <Box sx={{ display: 'flex', flexDirection:'column', marginLeft: '10%', marginTop: '10%' }}>
+            <Box sx={{display:'flex', flexDirection:'row', marginTop:'3%', marginLeft:'10%', justifyContent:{xs:'center'}}}>
+            <Box sx={{ display: 'flex', flexDirection:'column', marginLeft: '10%', marginTop: '10%', marginLeft: { xs:"10px"} }}>
                 <Typography variant="h6"
                     sx={{
                         fontFamily: "Montserrat",
@@ -102,7 +106,7 @@ export default function BottomNav() {
                     </div>
                 </Link>
             </Box>
-            <Box sx={{ display: 'flex', flexDirection:'column', marginLeft: '65%', marginTop:'10%' }}>
+            <Box sx={{ display: 'flex', flexDirection:'column', marginLeft: '65%', marginTop:'10%', marginRight:{xs:'10px'}}}>
                 <Typography
                     variant="h6"
                     sx={{ fontFamily: "Montserrat", marginLeft: "10px", color: '#FFF6E8', fontWeight: 'bold', marginBottom:'5px' }}
@@ -126,5 +130,6 @@ export default function BottomNav() {
             </Box>
             </Box>
         </BottomNavigation>
+        </Box>
     );
 }
