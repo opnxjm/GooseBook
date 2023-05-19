@@ -2,7 +2,11 @@ const express = require("express");
 const app = express();
 const mysql = require('mysql2');
 const cors = require("cors");
+const bcrypt = require('bcrypt');
 const crypto = require('crypto');
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+var jwt = require('jsonwebtoken');
 
 app.use(cors());
 app.use(express.json());
@@ -27,6 +31,7 @@ app.get("/login", (req, res) => {
     if (err) {
       console.log(err);
     } else {
+      console.log(result);
       res.send(result);
     }
   });
@@ -44,7 +49,11 @@ app.get("/user/:email", async (req, res) => {
       res.send(result[0]);
     }
   });
+  
 });
+
+
+
 
 app.post("/create", (req, res) => {
   const name = req.body.name;
@@ -63,61 +72,141 @@ app.post("/create", (req, res) => {
       }
     }
   );
-});// Assuming you have an Express.js server set up
+});
 
 
-
-app.post("/login", (req, res) => {
-  const email = req.body.email;
-  const pass = req.body.pass;
+app.post("/club", (req, res) => {
+  const club_name = req.body.club_name;
+  const club_description = req.body.club_description;
+  const club_cover = req.body.club_cover;
+  if (!club_name || !club_description || !club_cover) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
   connection.query(
-      "SELECT pass, salt FROM user WHERE email = ?",
-      [email],
-      (err, result) => {
+    "INSERT INTO bookClub (club_name, club_description, club_cover) VALUES (?,?,?)",
+    [club_name, club_description, club_cover],
+    (err, result) => {
       if (err) {
-          console.error(err.message);
-          return res.json({
-            success: false,
-            data: null,
-            error: err.message,
-          });
+        console.error("Error executing SQL query:", err);
+        return res.status(500).json({ error: "Failed to create club" });
       }
-      if (result.length === 0) {
-          return res.status(401).json({ message: "Authentication failed" });
-      }
-      const encryptedPassword = result[0].pass;
-      const decryptedPassword = decrypt(encryptedPassword);
-      if (pass === decryptedPassword) {
-        return res.status(200).json({ message: "Authentication successful" });
+      res.status(201).json({ 
+        message: "Club created successfully", 
+        clubId: result.insertId });
+    }
+  );
+});
+
+// app.post("/search", (req, res) => {
+//   const  = req.body.club_name;
+//   const club_description = req.body.club_description;
+//   const club_cover = req.body.club_cover;
+//   if (!club_name || !club_description || !club_cover) {
+//     return res.status(400).json({ error: "Missing required fields" });
+//   }
+//   connection.query(
+//     "INSERT INTO bookClub (club_name, club_description, club_cover) VALUES (?,?,?)",
+//     [club_name, club_description, club_cover],
+//     (err, result) => {
+//       if (err) {
+//         console.error("Error executing SQL query:", err);
+//         return res.status(500).json({ error: "Failed to create club" });
+//       }
+//       res.status(201).json({ 
+//         message: "Club created successfully", 
+//         clubId: result.insertId });
+//     }
+//   );
+// });
+
+app.post("/login", async (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  connection.query(
+    "SELECT * FROM user WHERE email = ?",
+    [email],
+    async (err, rows) => {
+      if (err) {
+        res.json({
+          success: false,
+          data: null,
+          error: err.message,
+        });
       } else {
-        return res.status(401).json({ message: "Authentication failed" });
+        const numRows = rows.length;
+        if (numRows == 0) {
+          res.json({
+            success: false,
+            message: "This email does not exist",
+          });
+        } else {
+          const isMatch = comparePasswords(password, rows[0].pass);
+          console.log(password);
+          console.log(rows[0].pass);
+          if (!isMatch) {
+            res.json({
+              success: false,
+              message: "The password is incorrect",
+            });
+          } else {
+            const token = jwt.sign(
+              {
+                userId: rows[0].id,
+              },
+              "ZJGX1QL7ri6BGJWj3t",
+              { expiresIn: "1h" }
+            );
+            res.cookie("user", token);
+            res.json({
+              success: true,
+              message: "The password is correct",
+              user: rows[0],
+            });
+          }
+        }
       }
     }
   );
 });
 
-app.get("/book/:title", async (req, res) => {
+function comparePasswords(password, hashedPassword) {
+  const passwordBuffer = Buffer.from(password, 'utf-8');
+  const hashedPasswordBuffer = Buffer.from(hashedPassword, 'utf-8');
+
+  return crypto.timingSafeEqual(passwordBuffer, hashedPasswordBuffer);
+}
+
+app.get("/title/:review", async (req, res) => {
   const title = req.params.title;
-  connection.query("SELECT title, author, publisher, published_year, book_description, language, book_cover FROM book WHERE title = ?", [title], (err, result) => {
+  connection.query("SELECT review FROM review INNER JOIN book b on review.book_id = b.book_id WHERE SELECT review FROM review INNER JOIN book b on review.book_id = b.book_id WHERE title = ?", [title], (err, result) => {
     if (err) {
       console.log(err);
-      res.status(500).send("Error retrieving book record");
+      res.status(500).send("Error retrieving review");
     } else if (result.length === 0) {
-      res.status(404).send("Book not found");
+      res.status(404).send("No review");
     } else {
       res.send(result[0]);
     }
   });
 });
 
-app.get("/book", (req, res) => {
-  connection.query("SELECT * FROM book", (err, result) => {
+app.get("/title", async (req, res) => {
+
+  connection.query("SELECT * FROM book",(err, result) => {
     if (err) {
       console.log(err);
+      res.status(500).send("Error retrieving user record");
+    } else if (result.length === 0) {
+      res.status(404).send("User not found");
     } else {
-      res.send(result);
+      res.json({
+        success: true,
+        message: "The password is correct",
+        user: result,
+      });
     }
   });
+  
 });
 
 app.listen(3008, () => {

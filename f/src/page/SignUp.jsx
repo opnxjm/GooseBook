@@ -49,16 +49,6 @@ function Signup({ setUserSignup }) {
         else{
             alert('Please provide all required information.');
         }
-        // if (!!name || !!surname || !!email || !!password || !!confirmedPass) {
-        //   alert('Please provide all required information.');
-        // //   return;
-        // }
-        // if (password !== confirmedPass) {
-        //   alert('The password and confirmed password aren\'t the same');
-        // //   return;
-        // }
-        
-       
       }
     return (
         <div className='signup-container'>

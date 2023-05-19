@@ -12,6 +12,7 @@ import Search from './page/Search';
 import NotFound from './page/NotFound';
 import AddClub from './page/AddClub';
 import BookOverview from './page/BookOverview';
+import BookReview from './page/BookReview';
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [userSignup, setUserSignup] = useState(false);
@@ -29,6 +30,7 @@ function App() {
           <Route path='/NotFound' element={ <NotFound userLoggedIn={userLoggedIn}/>} />
           <Route path='/AddClub' element={ <AddClub userLoggedIn={userLoggedIn}/>} />
           <Route path='/BookOverview' element={ <BookOverview userLoggedIn={userLoggedIn}/>} />
+          <Route path='/BookReview' element={ <BookReview userLoggedIn={userLoggedIn}/>} />
         </Routes>
       </BrowserRouter>
     </div>

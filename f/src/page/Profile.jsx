@@ -1,9 +1,10 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Box, Typography } from '@mui/material';
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Axios from "axios";
 import BottomNav from '../component/BottomNav';
+import { MyContext } from '../service/globalContext';
 
 function Profile({ email }) {
     //     const [user, setUser] = useState(null);
@@ -14,6 +15,8 @@ function Profile({ email }) {
     //     setUser(response.data);
     //   });
     // }, [email]);
+    const { setUserDataValue, getUserDataValue} = useContext(MyContext)
+    const user = getUserDataValue();
     return (
         <Box>
             <div style={{ position: 'relative' }}>
@@ -59,7 +62,8 @@ function Profile({ email }) {
                     textAlign: 'center',
                     marginTop: '30px'
                 }}>
-                    @wanttosleep
+                    @{user.username}
+                    {/* @{getUserDataValue().username} */}
                 </Typography>
                 <Typography variant='h6' sx={{
                     fontFamily: 'Montserrat',
@@ -67,14 +71,14 @@ function Profile({ email }) {
                     fontWeight: 'bold',
                     textAlign: 'center',
                 }}>
-                    tn
+                    {user.name}
                 </Typography>
                 <Typography variant='h6' sx={{
                     fontFamily: 'Montserrat',
                     color: '#3C2317',
                     textAlign: 'center',
                 }}>
-                    choose sleep ter
+                   {user.bio}
                 </Typography>
             </Box>
             <Box sx={{ backgroundColor: "#B4CDE6", display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>

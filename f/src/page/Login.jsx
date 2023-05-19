@@ -1,47 +1,46 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import './Login.css';
 import { useHistory } from 'react-router-dom';
-import { Axios } from 'axios';
+import axios from 'axios';
+import { MyContext } from '../service/globalContext';
 
 function Login({ setUserLoggedIn }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const {setUserDataValue, getUserDataValue}  = useContext(MyContext);
     const navigate = useNavigate();
-
-    const searchUser = () => {
-        Axios.get("http://localhost:3008/login", {
-            email: email,
-            password: password
-        }).then(() => {
-            setUserLoggedIn(true);
-            //navigate('/Home');
-        });
-    };
-
     const handleLogin = async (event) => {
-        if(searchUser){
-            setUserLoggedIn(true);
-            navigate('/Home');
-        }
         event.preventDefault();
-        
         try {
-            const response = await Axios.get("http://localhost:3008/login");
-            const userData = response.data;
-
-            const user = userData.find((user) => user.email === email && user.password === password);
-
-            if (user) {
+            const response = await axios.post("http://localhost:3008/login", {
+                email: email,
+                password: password
+              });
+        
+              if (response.data.success) {
+                // Login successful
+                const user = response.data.user;
+            
                 setUserLoggedIn(true);
+                setUserDataValue({
+                    userId: user.user_id,
+                    username: user.username,
+                    name: user.name,
+                    bio: user.bio,
+                    profile_pic: null,
+                    email: user.email,
+                })
                 navigate('/Home');
-            } else {
-                alert("Invalid email or password");
+                console.log(getUserDataValue);
+              } else {
+                // Login failed
+                console.log(response.data.message);
+              }
+            } catch (error) {
+              console.error('Error logging in:', error);
             }
-        } catch (error) {
-            console.log(error);
-        }
-    };
+          };
 
 
 
@@ -58,7 +57,7 @@ function Login({ setUserLoggedIn }) {
                     <label className='pass' htmlFor="password">Password:</label><br />
                     <input type="password" id="password" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} />
                 </div>
-                <button className='Login-button' type="submit" style={{
+                <input className='Login-button' type="submit" style={{
                     backgroundColor: '#628E90',
                     borderRadius: '50px',
                     height: '47px',
@@ -74,8 +73,8 @@ function Login({ setUserLoggedIn }) {
                     margin: 'auto',
                     marginTop: '3%',
                     filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
-                }}>
-                    Login</button>
+                }} value="login" />
+               
                 <p className='or' style={{fontWeight:'bold', fontSize:'20px'}}>OR</p>
                 <Link to="/signup" style={{ textDecoration: 'none' }}>
                     <button className='Signup-button' type="submit" style={{

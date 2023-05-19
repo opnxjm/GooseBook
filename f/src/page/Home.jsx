@@ -3,7 +3,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Home.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
@@ -12,6 +12,8 @@ import Navbar from '../component/Navbar';
 import Card from "@mui/material/Card";
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
+import Cardja from '../component/Cardja';
+import axios from 'axios';
 
 const theme = createTheme({
     typography: {
@@ -32,9 +34,32 @@ const theme = createTheme({
 
 function Home() {
     const navigate = useNavigate();
+    const [data, setData] = useState([]);
     const handleOpenProfile = (e) => {
         navigate("/Profile");
     }
+    const getTitle = async () => {
+
+        try {
+            const response = await axios.get("http://localhost:3008/title");
+        
+              if (response.data.success) {
+                // Login successful
+                const user = response.data.user;
+            setData(user);
+                navigate('/Home');
+              } else {
+                // Login failed
+                console.log(response.data.message);
+              }
+            } catch (error) {
+              console.error('Error logging in:', error);
+            }
+          };
+
+          useEffect(() => {
+            getTitle();
+          })
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -50,7 +75,10 @@ function Home() {
                     Recommended book
                 </Typography>
                 <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: '1%' }}>
-                    <Card sx={{ height: 'auto', width: '15%', marginLeft: '20px', marginBottom: '20px', backgroundColor: '#B4CDE6', }}>
+                    {data.slice(0,6).map((d)=>{
+                        return <Cardja img={"../asset/Psycho.jpeg"} title ={d.title}/>
+                    })}
+                    {/* <Card sx={{ height: 'auto', width: '15%', marginLeft: '20px', marginBottom: '20px', backgroundColor: '#B4CDE6', }}>
                         <CardMedia
                             component="img"
                             alt="psycho"
@@ -92,20 +120,7 @@ function Home() {
                             </Typography>
                         </CardContent>
                     </Card>
-                    <Card sx={{ height: 'auto', width: '15%', marginLeft: '20px', marginBottom: '20px', backgroundColor: '#B4CDE6' }}>
-                        <CardMedia
-                            component="img"
-                            alt="heal"
-                            sx={{ display: 'flex', justifyContent: 'center', marginLeft: '25%', marginTop: '10px' }}
-                            style={{ width: '50%', height: 'auto' }}
-                            image="../asset/heal.jpeg"
-                        />
-                        <CardContent>
-                            <Typography gutterBottom variant="h7" sx={{ fontFamily: 'Montserrat', color: '#3C2317', textAlign: 'center', marginTop: '17px' }} component="div">
-                                Healing Is The New High
-                            </Typography>
-                        </CardContent>
-                    </Card>
+                   <Cardja img={"../asset/emo.jpeg"} title={"Emotional first aid"}/>
                     <Card sx={{ height: 'auto', width: '15%', marginLeft: '20px', marginBottom: '20px', backgroundColor: '#B4CDE6' }}>
                         <CardMedia
                             component="img"
@@ -133,7 +148,7 @@ function Home() {
                                 365 Days Of Wonder
                             </Typography>
                         </CardContent>
-                    </Card>
+                    </Card> */}
                 </Box>
             </Box>
             <br />
