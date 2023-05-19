@@ -7,6 +7,7 @@ const crypto = require('crypto');
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 var jwt = require('jsonwebtoken');
+const { log } = require("console");
 
 app.use(cors());
 app.use(express.json());
@@ -37,20 +38,7 @@ app.get("/login", (req, res) => {
   });
 });
 
-app.get("/user/:email", async (req, res) => {
-  const email = req.params.email;
-  connection.query("SELECT name, profile_pic FROM user WHERE email = ?", email, (err, result) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send("Error retrieving user record");
-    } else if (result.length === 0) {
-      res.status(404).send("User not found");
-    } else {
-      res.send(result[0]);
-    }
-  });
-  
-});
+
 
 
 
@@ -60,15 +48,15 @@ app.post("/create", (req, res) => {
   const surname = req.body.surname;
   const email = req.body.email;
   const pass = req.body.pass;
-
+  const user_id =  Math.floor(Math.random() * (100000 - 0 + 1)) + 0;
   connection.query(
-    "INSERT INTO user (name, surname, email, pass) VALUES (?,?,?,?)",
-    [name, surname, email, pass],
+    "INSERT INTO user (user_id,name, surname, email, pass) VALUES (?,?,?,?,?)",
+    [user_id,name, surname, email, pass],
     (err, result) => {
       if (err) {
         console.log(err);
       } else {
-        res.send("Values Inserted");
+        res.send({userId:user_id});
       }
     }
   );
@@ -90,9 +78,10 @@ app.post("/club", (req, res) => {
         console.error("Error executing SQL query:", err);
         return res.status(500).json({ error: "Failed to create club" });
       }
-      res.status(201).json({ 
-        message: "Club created successfully", 
-        clubId: result.insertId });
+      res.status(201).json({
+        message: "Club created successfully",
+        clubId: result.insertId
+      });
     }
   );
 });
@@ -176,39 +165,78 @@ function comparePasswords(password, hashedPassword) {
   return crypto.timingSafeEqual(passwordBuffer, hashedPasswordBuffer);
 }
 
-app.get("/title/:review", async (req, res) => {
-  const title = req.params.title;
-  connection.query("SELECT review FROM review INNER JOIN book b on review.book_id = b.book_id WHERE SELECT review FROM review INNER JOIN book b on review.book_id = b.book_id WHERE title = ?", [title], (err, result) => {
+app.get("/title", async (req, res) => {
+
+  connection.query("SELECT * FROM book", (err, result) => {
     if (err) {
       console.log(err);
-      res.status(500).send("Error retrieving review");
+      res.status(500).send("Error retrieving book record");
+    } else if (result.length === 0) {
+      res.status(404).send("Book not found");
+    } else {
+      res.json({
+        success: true,
+        message: "Found",
+        book: result,
+      });
+    }
+  });
+});
+app.get("/book/:book_id", async (req, res) => {
+  const book_id = req.params.book_id;
+  connection.query("SELECT * FROM book WHERE book_id = ?", [+book_id], (err, result) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Error retrieving book");
     } else if (result.length === 0) {
       res.status(404).send("No review");
     } else {
-      res.send(result[0]);
+      res.send({
+        success: true,
+        message: "Found",
+        book: result[0]
+      });
     }
   });
 });
 
-app.get("/title", async (req, res) => {
 
-  connection.query("SELECT * FROM book",(err, result) => {
+app.get("/club", async (req, res) => {
+
+  connection.query("SELECT * FROM bookClub", (err, result) => {
     if (err) {
       console.log(err);
-      res.status(500).send("Error retrieving user record");
+      res.status(500).send("Error retrieving club record");
+    } else if (result.length === 0) {
+      res.status(404).send("Club not found");
+    } else {
+      res.json({
+        success: true,
+        message: "Club found",
+        club: result,
+      });
+    }
+  });
+});
+
+app.get("/getUser/:userId", async (req, res) => {
+  const userId= req.params.userId;
+  console.log(typeof(userId));
+  connection.query("SELECT * FROM user WHERE user_id = ?",[userId], (err, result) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Error retrieving user id");
     } else if (result.length === 0) {
       res.status(404).send("User not found");
     } else {
       res.json({
         success: true,
-        message: "The password is correct",
+        message: "Found",
         user: result,
       });
     }
   });
-  
 });
-
 app.listen(3008, () => {
   console.log("Yey, your server is running on port 3008");
 });

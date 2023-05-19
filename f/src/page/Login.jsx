@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import './Login.css';
-import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { MyContext } from '../service/globalContext';
 
@@ -21,7 +20,6 @@ function Login({ setUserLoggedIn }) {
               if (response.data.success) {
                 // Login successful
                 const user = response.data.user;
-            
                 setUserLoggedIn(true);
                 setUserDataValue({
                     userId: user.user_id,
@@ -31,6 +29,7 @@ function Login({ setUserLoggedIn }) {
                     profile_pic: null,
                     email: user.email,
                 })
+                
                 navigate('/Home');
                 console.log(getUserDataValue);
               } else {
@@ -41,8 +40,6 @@ function Login({ setUserLoggedIn }) {
               console.error('Error logging in:', error);
             }
           };
-
-
 
     return (
         <div className='login'>

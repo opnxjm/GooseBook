@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 
 function Cardja({img, title}) {
     return (
-        <Card sx={{ height: 'auto', width: '15%', marginLeft: '20px', marginBottom: '20px', backgroundColor: '#B4CDE6' }}>
+        <Card sx={{ height: 250, width: 200, marginLeft: '20px', marginBottom: '20px', backgroundColor: '#B4CDE6' }}>
             <CardMedia
                 component="img"
                 alt="heal"

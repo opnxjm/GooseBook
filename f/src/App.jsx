@@ -14,6 +14,7 @@ import AddClub from './page/AddClub';
 import BookOverview from './page/BookOverview';
 import BookReview from './page/BookReview';
 function App() {
+  //const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [userSignup, setUserSignup] = useState(false);
   return (
@@ -23,13 +24,14 @@ function App() {
           <Route path="/" element={<Login setUserLoggedIn={setUserLoggedIn} />} />
           <Route path='/Signup' element={<Signup setUserSignup={setUserSignup}/>} />
           <Route path="/Home" element={<Home userLoggedIn={userLoggedIn} userSignup={userSignup} />} />
-          <Route path='/Profile' element={ <Profile userLoggedIn={userLoggedIn}/>} />
+          <Route path='/Profile' element={ <Profile userLoggedIn={userLoggedIn} />} />
           <Route path='/ProfileRead' element={ <ProfileRead userLoggedIn={userLoggedIn}/>} />
           <Route path='/ProfileWant' element={ <ProfileWant userLoggedIn={userLoggedIn}/>} />
           <Route path='/Search' element={ <Search userLoggedIn={userLoggedIn}/>} />
           <Route path='/NotFound' element={ <NotFound userLoggedIn={userLoggedIn}/>} />
           <Route path='/AddClub' element={ <AddClub userLoggedIn={userLoggedIn}/>} />
           <Route path='/BookOverview' element={ <BookOverview userLoggedIn={userLoggedIn}/>} />
+          <Route path='/book/:book_id' element={ <BookOverview userLoggedIn={userLoggedIn}/>} />
           <Route path='/BookReview' element={ <BookReview userLoggedIn={userLoggedIn}/>} />
         </Routes>
       </BrowserRouter>

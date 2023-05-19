@@ -34,11 +34,13 @@ body{
     color: #606161;
     font-family: 'Montserrat';
     font-size: 18px;
-    padding: 0.5%;
+    padding: 0.2%;
     background-color: white;
     border: solid #628E90;
     width: 30%;
     height: 45px;
+    justify-content: center;
+    align-items: center;
     border-radius: 50px;
 }
 .recommended-book{

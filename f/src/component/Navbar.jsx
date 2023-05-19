@@ -10,7 +10,7 @@ import { Box } from '@mui/material';
 
 function Navbar() {
     const navigate = useNavigate();
-    const handleOpenProfile = (e) => {
+    const handleOpenProfile = () => {
         navigate("/Profile");
     }
     return (

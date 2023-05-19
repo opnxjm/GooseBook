@@ -6,7 +6,7 @@ import Axios from "axios";
 import BottomNav from '../component/BottomNav';
 import { MyContext } from '../service/globalContext';
 
-function Profile({ email }) {
+function Profile() {
     //     const [user, setUser] = useState(null);
 
     //     useEffect(() => {
@@ -15,6 +15,7 @@ function Profile({ email }) {
     //     setUser(response.data);
     //   });
     // }, [email]);
+
     const { setUserDataValue, getUserDataValue} = useContext(MyContext)
     const user = getUserDataValue();
     return (
