@@ -1,20 +1,32 @@
 import { AppBar, Box, Toolbar, Typography, Grid } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import SearchIcon from '@mui/icons-material/Search';
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import BottomNav from "../component/BottomNav";
+import axios from 'axios';
+import Cardja from "../component/Cardja";
 
 function Search() {
     const [title, setTitle] = useState('');
-    const [author, setAuthor] = useState('');
-    const [ISBN, setISBN] = useState('');
+    const [bookData, setBookData] = useState(null);
     const navigate = useNavigate();
-    const handleSearch = (e) => {
+
+    const handleSearch = async (e) => {
         e.preventDefault();
-        console.log(title, author, ISBN);
-        navigate("/NotFound");
-    }
+
+        try {
+            const response = await axios.get(`http://localhost:3008/search?title=${title}`);
+            if (response.data.success) {
+                setBookData(response.data.book);
+            } else {
+                navigate('/Notfound');
+            }
+        } catch (error) {
+            console.error('Error searching book:', error);
+            navigate('/Notfound');
+        }
+    };
+
     return (
         <Box>
             <AppBar position="static" sx={{ backgroundColor: '#3C2317', marginBottom: '30px' }}>
@@ -31,15 +43,12 @@ function Search() {
                 </Toolbar>
             </AppBar>
             <form onSubmit={handleSearch}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%', mt:'5vh'}}>
                     <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
-                        <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} style={{ paddingRight: '2rem' }} />
-                        <input type="text" placeholder="Author" value={author} onChange={(e) => setAuthor(e.target.value)} style={{ paddingRight: '2rem' }} />
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                        <input type="text" placeholder="ISBN" value={ISBN} onChange={(e) => setISBN(e.target.value)} style={{ paddingRight: '2rem' }} />
+                        <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} style={{ paddingRight: '2rem', width:'60vw' }} />
                     </Box>
                 </Box>
+                <br/>
                 <input type="submit" value='submit' style={{
                     backgroundColor: '#628E90',
                     borderRadius: '50px',
@@ -57,6 +66,14 @@ function Search() {
                     filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
                 }} />
             </form>
+
+            {bookData && (
+                <Cardja
+                    title={bookData.title}
+                    img={bookData.book_cover}
+                />
+            )}
+
             <Box sx={{
                 position: 'fixed',
                 left: 0,

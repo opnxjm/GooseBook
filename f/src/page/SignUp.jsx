@@ -9,7 +9,7 @@ import { MyContext } from '../service/globalContext';
 
 function Signup({ setUserSignup }) {
     const [name, setName] = useState('')
-    const [surname, setSurname] = useState('');
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmedPass, setConfirmedPass] = useState('');
@@ -22,50 +22,21 @@ function Signup({ setUserSignup }) {
     // const matches = useMediaQuery(theme.breakpoints.up('sm'));
     const [userList, setUserList] = useState([]);
     const [userId, setUserId] = useState(0);
-    const [name2,setName2]=useState("");
+    const [name2, setName2] = useState("");
     const addUser = async () => {
-        // const response = Axios.get('http://localhost:3008/latestUserId');
-        // latestUserId = response.data.latestUserId;
         const response = await Axios.post("http://localhost:3008/create", {
             name: name,
-            surname: surname,
+            username: username,
             email: email,
             pass: password,
-          });
-         const res2 = await Axios.get("http://localhost:3008/getUser/" + response.data.userId)
-         const userData = res2.data.user[0];
-
-          console.log(userData.user_id);
-          console.log(userData.name);
-          console.log(userData.email);
-         setUserDataValue({
-            userId: userData.user_id,
-            username: null,
-            name: userData.name,
-            bio: null,
-            profile_pic: null,
-            email: userData.email
-        })
-
+        });
+        document.cookie = "userId=" + response.data.userId;
     };
-
-
-    // const getUser = async () => {
-    //     await Axios.get("http://localhost:3008/getUser/" + userId).then((res) => {
-    //         setUserDataValue({
-    //             userId: res.data.user.userId,
-    //             username: null,
-    //             name: res.data.user.name,
-    //             bio: null,
-    //             profile_pic: null,
-    //             email: res.data.user.email
-    //         })
-    //     })
     
-    // }
+
     const handleSignup = (e) => {
         e.preventDefault()
-        if (password === confirmedPass && name != '' && surname != '' && email != '') {
+        if (password === confirmedPass && name !== '' && username !== '' && email !== '') {
             addUser();
             // console.log(userId);
             setUserSignup(true);
@@ -91,8 +62,8 @@ function Signup({ setUserSignup }) {
                     <input type="text" required placeholder='Name' value={name} onChange={(e) => setName(e.target.value)} />
                 </div>
                 <div className='info'>
-                    <label className="nameS" htmlFor="surname">Surname:</label><br />
-                    <input type="text" placeholder='Surname' value={surname} onChange={(e) => setSurname(e.target.value)} required />
+                    <label className="nameS" htmlFor="username">Username:</label><br />
+                    <input type="text" placeholder='Username' value={username} onChange={(e) => setUsername(e.target.value)} required />
                 </div>
                 <div className='info'>
                     <label className="emailS" htmlFor="email">Email:</label><br />

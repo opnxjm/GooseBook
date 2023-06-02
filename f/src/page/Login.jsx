@@ -14,13 +14,15 @@ function Login({ setUserLoggedIn }) {
         try {
             const response = await axios.post("http://localhost:3008/login", {
                 email: email,
-                password: password
+                pass: password
               });
         
               if (response.data.success) {
                 // Login successful
                 const user = response.data.user;
                 setUserLoggedIn(true);
+                document.cookie = "userId=" + user.user_id;
+                console.log(user.user_id);
                 setUserDataValue({
                     userId: user.user_id,
                     username: user.username,

@@ -7,7 +7,6 @@ const crypto = require('crypto');
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 var jwt = require('jsonwebtoken');
-const { log } = require("console");
 
 app.use(cors());
 app.use(express.json());
@@ -27,216 +26,33 @@ connection.connect((err) => {
   console.log('MySQL successfully connected!');
 })
 
-app.get("/login", (req, res) => {
-  connection.query("SELECT email, pass FROM user", (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(result);
-      res.send(result);
-    }
-  });
-});
+
+const loginRouter = require("./route/login")(connection, "somesecretkey");
+const registerRouter = require("./route/register")(connection);
+const getUserRouter = require("./route/getUser")(connection);
+const bookId = require("./route/book_id")(connection);
+const deleteReviewRouter = require("./route/deleteReview")(connection);
+const editReviewRouter = require("./route/editReview")(connection);
+const addReviewRouter = require("./route/addReview")(connection);
+const searchRouter = require("./route/search")(connection);
+const reviewRouter = require("./route/review")(connection);
+const getBookRouter = require("./route/getBook")(connection);
+
+
+app.post("/login", loginRouter);
+app.post("/create", registerRouter);
+app.get("/getUser/:userId", getUserRouter);
+app.get("/book/:book_id", bookId);
+app.get("/books/:book_id/comments", reviewRouter);
+app.post("/addReview/:userId/:book_id", addReviewRouter);
+app.patch("/updateReview/:book_id/:commentId", editReviewRouter);
+app.delete("/review/:book_id/:review_id", deleteReviewRouter);
+app.get("/search", searchRouter);
+app.get("/title", getBookRouter);
 
 
 
 
-
-
-app.post("/create", (req, res) => {
-  const name = req.body.name;
-  const surname = req.body.surname;
-  const email = req.body.email;
-  const pass = req.body.pass;
-  const user_id =  Math.floor(Math.random() * (100000 - 0 + 1)) + 0;
-  connection.query(
-    "INSERT INTO user (user_id,name, surname, email, pass) VALUES (?,?,?,?,?)",
-    [user_id,name, surname, email, pass],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send({userId:user_id});
-      }
-    }
-  );
-});
-
-
-app.post("/club", (req, res) => {
-  const club_name = req.body.club_name;
-  const club_description = req.body.club_description;
-  const club_cover = req.body.club_cover;
-  if (!club_name || !club_description || !club_cover) {
-    return res.status(400).json({ error: "Missing required fields" });
-  }
-  connection.query(
-    "INSERT INTO bookClub (club_name, club_description, club_cover) VALUES (?,?,?)",
-    [club_name, club_description, club_cover],
-    (err, result) => {
-      if (err) {
-        console.error("Error executing SQL query:", err);
-        return res.status(500).json({ error: "Failed to create club" });
-      }
-      res.status(201).json({
-        message: "Club created successfully",
-        clubId: result.insertId
-      });
-    }
-  );
-});
-
-// app.post("/search", (req, res) => {
-//   const  = req.body.club_name;
-//   const club_description = req.body.club_description;
-//   const club_cover = req.body.club_cover;
-//   if (!club_name || !club_description || !club_cover) {
-//     return res.status(400).json({ error: "Missing required fields" });
-//   }
-//   connection.query(
-//     "INSERT INTO bookClub (club_name, club_description, club_cover) VALUES (?,?,?)",
-//     [club_name, club_description, club_cover],
-//     (err, result) => {
-//       if (err) {
-//         console.error("Error executing SQL query:", err);
-//         return res.status(500).json({ error: "Failed to create club" });
-//       }
-//       res.status(201).json({ 
-//         message: "Club created successfully", 
-//         clubId: result.insertId });
-//     }
-//   );
-// });
-
-app.post("/login", async (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
-  connection.query(
-    "SELECT * FROM user WHERE email = ?",
-    [email],
-    async (err, rows) => {
-      if (err) {
-        res.json({
-          success: false,
-          data: null,
-          error: err.message,
-        });
-      } else {
-        const numRows = rows.length;
-        if (numRows == 0) {
-          res.json({
-            success: false,
-            message: "This email does not exist",
-          });
-        } else {
-          const isMatch = comparePasswords(password, rows[0].pass);
-          console.log(password);
-          console.log(rows[0].pass);
-          if (!isMatch) {
-            res.json({
-              success: false,
-              message: "The password is incorrect",
-            });
-          } else {
-            const token = jwt.sign(
-              {
-                userId: rows[0].id,
-              },
-              "ZJGX1QL7ri6BGJWj3t",
-              { expiresIn: "1h" }
-            );
-            res.cookie("user", token);
-            res.json({
-              success: true,
-              message: "The password is correct",
-              user: rows[0],
-            });
-          }
-        }
-      }
-    }
-  );
-});
-
-function comparePasswords(password, hashedPassword) {
-  const passwordBuffer = Buffer.from(password, 'utf-8');
-  const hashedPasswordBuffer = Buffer.from(hashedPassword, 'utf-8');
-
-  return crypto.timingSafeEqual(passwordBuffer, hashedPasswordBuffer);
-}
-
-app.get("/title", async (req, res) => {
-
-  connection.query("SELECT * FROM book", (err, result) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send("Error retrieving book record");
-    } else if (result.length === 0) {
-      res.status(404).send("Book not found");
-    } else {
-      res.json({
-        success: true,
-        message: "Found",
-        book: result,
-      });
-    }
-  });
-});
-app.get("/book/:book_id", async (req, res) => {
-  const book_id = req.params.book_id;
-  connection.query("SELECT * FROM book WHERE book_id = ?", [+book_id], (err, result) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send("Error retrieving book");
-    } else if (result.length === 0) {
-      res.status(404).send("No review");
-    } else {
-      res.send({
-        success: true,
-        message: "Found",
-        book: result[0]
-      });
-    }
-  });
-});
-
-
-app.get("/club", async (req, res) => {
-
-  connection.query("SELECT * FROM bookClub", (err, result) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send("Error retrieving club record");
-    } else if (result.length === 0) {
-      res.status(404).send("Club not found");
-    } else {
-      res.json({
-        success: true,
-        message: "Club found",
-        club: result,
-      });
-    }
-  });
-});
-
-app.get("/getUser/:userId", async (req, res) => {
-  const userId= req.params.userId;
-  console.log(typeof(userId));
-  connection.query("SELECT * FROM user WHERE user_id = ?",[userId], (err, result) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send("Error retrieving user id");
-    } else if (result.length === 0) {
-      res.status(404).send("User not found");
-    } else {
-      res.json({
-        success: true,
-        message: "Found",
-        user: result,
-      });
-    }
-  });
-});
 app.listen(3008, () => {
   console.log("Yey, your server is running on port 3008");
 });
